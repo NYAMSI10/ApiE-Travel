@@ -1,2 +1,2 @@
 # ApiE-Travel
-Nodejs+Expressjs+Api Rest+Prisma+Mysql
+Nodejs+Expressjs+Graphql+Prisma+Mysql
