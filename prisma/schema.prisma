@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  adresse     String
+  ville       String
+  codepostal  String
+  phone       String
+  avatar      String?
+  password    String
+  role        Role          @default(USER)
+  commentaire Commentaire[]
+  reservation Reservation[]
+  annonce     Annonce[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updateAt    DateTime      @updatedAt @map("update_at")
+}
+
+enum Role {
+  USER
+  ADMIN
+  AGENCE
+}
+
+model Annonce {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String        @db.Text
+  startcity   String
+  startend    String
+  hourstart   String
+  hourend     String
+  datedepart  DateTime      @db.Date
+  placedispo  Int
+  price       Float
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  reservation Reservation[]
+  commentaire Commentaire[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updateAt    DateTime      @updatedAt @map("update_at")
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  total     Float
+  ref       String
+  ispaid    Boolean  @default(false)
+  place     Place[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int
+  annonceId Int
+  annonce   Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @updatedAt @map("update_at")
+}
+
+model Place {
+  id            Int         @id @default(autoincrement())
+  name          String
+  phone         String
+  email         String      @unique
+  adresse       String
+  ville         String
+  codepostal    String
+  reservationId Int
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updateAt      DateTime    @updatedAt @map("update_at")
+}
+
+model Commentaire {
+  id        Int      @id @default(autoincrement())
+  title     String
+  rating    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int
+  annonce   Annonce  @relation(fields: [annonceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  annonceId Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @updatedAt @map("update_at")
+}
