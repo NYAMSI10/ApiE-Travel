@@ -1,5 +1,4 @@
 # ApiE-Travel
-Nodejs+Expressjs+Graphql+Prisma+Mysql
 C'est une api de reservation de voyage en ligne avec qu'importe le moyen de transport (Train, Bus, Avion,...).
 
 # Les Technos Utilisées
