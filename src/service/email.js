@@ -1,21 +1,21 @@
 import nodemailer from "nodemailer";
+import 'dotenv/config'
 
 
 
-
-var transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
     auth: {
-        user: "03ccd10b4ed957",
-        pass: "********6bb0"
+        user: 'jermain.christiansen@ethereal.email',
+        pass: 'yNgaU7pnmuBzBGeZrb'
     }
 });
 
 
 export const mail = async (email,password) => {
 
-      return transport.sendMail({
+      return transporter.sendMail({
           from: 'apitravel@gmail.com',
           to:  `${email}`,
           subject: 'Inscription',

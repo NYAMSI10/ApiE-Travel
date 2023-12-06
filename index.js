@@ -5,15 +5,10 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import * as fs from "fs";
-import {resolvers} from "./src/resolvers/resolvers.js";
+import allTypeDefs from "./src/schema/allschema.js";
+import allResolvers from "./src/resolvers/allresolvers.js";
 
 
-// The GraphQL schema
-const schemaPath = "./src/schema/schema.graphql";
-
-// Read the content of the schema file
-const typeDefs = fs.readFileSync(schemaPath, 'utf8');
 
 // A map of functions which return data for the schema.
 
@@ -22,9 +17,10 @@ const httpServer = http.createServer(app);
 
 // Set up Apollo Server
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    typeDefs: allTypeDefs,
+    resolvers: allResolvers,
+    includeStacktraceInErrorResponses:false,
+    introspection:true,
 });
 await server.start();
 
